@@ -13,7 +13,7 @@
   def connect_to_postgres()
     puts "\nConnecting to Postgres..."
 puts "connect to db #{$:}"
-    return DBI.connect("dbi:Pg:dbname=my_super_duper_project_development;host=localhost", "myao", "merlin1")
+    return DBI.connect("dbi:Pg:dbname=mango_test;host=localhost", "myao", "db2")
   end
   
   def exercise_database(dbh)
@@ -21,7 +21,7 @@ puts "connect to db #{$:}"
      row = dbh.select_one("SELECT VERSION()")
      puts "Server version: " + row[0]
      
-     query = dbh.prepare("SELECT * FROM rocks")
+     query = dbh.prepare("SELECT * FROM data_hive.uri_queue")
      query.execute()
   
     while row = query.fetch() do

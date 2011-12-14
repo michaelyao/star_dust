@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'pg'
 $maxwidth=12
-conn = PGconn.connect("localhost", 5432, '', '', "my_super_duper_project_development", "myao", "merlin1")
+conn = PGconn.connect(*["", 5432, '', '', "mango_test", "myao", "db2"])
 
 res  = conn.exec('select tablename, tableowner from pg_tables')
 
@@ -43,7 +43,7 @@ end
 ###### PRINT COLUMN NAMES AS BANNER ABOVE DATA ######
 puts
 begin
-  res  = conn.exec('SELECT column_name FROM my_super_duper_project_development.information_schema.columns WHERE table_name=\'rocks\';')
+  res  = conn.exec('SELECT column_name FROM mango_test.information_schema.columns WHERE table_name=\'rocks\';')
 
 rescue PGError => e
   puts "Error selecting column names."

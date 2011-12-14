@@ -6,10 +6,10 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: my_super_duper_project_development
+  database: mango_test
   pool: 5
   username: myao
-  password: merlin1
+  password: db2
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,16 +17,17 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: my_super_duper_project_test
+  database: mango_test
   pool: 5
   username: myao
-  password: merlin1
+  password: db2
+  host: localhost
 
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: my_super_duper_project_production
+  database: mango_test
   pool: 5
-  username: my_super_duper_project
+  username: myao
   password:

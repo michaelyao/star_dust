@@ -16,19 +16,19 @@ class DB_Queue < BC_Queue
  
    def add_tail(element)
      begin
-	puts "In add tail"
+	     puts "In add tail"
        sth = @dbh.prepare("SELECT uri, last_modified_date FROM data_hive.uri_queue WHERE uri = ?")
-	puts "after prepare"
+	     puts "after prepare"
 
        sth.execute(element.uri)
-  puts "after excute"
+       puts "after excute"
        puts sth.to_s()
        
        if( sth.count > 0 )
-puts "finish 1"
+         puts "finish 1"
          sth.finish
        else
-	 puts "finish 2"
+	       puts "finish 2"
          sth.finish
          puts "sth.count"
          sth = @dbh.prepare("insert INTO data_hive.uri_queue( uri, last_modified_date ) VALUES ( ?, ?)")
@@ -44,10 +44,10 @@ puts "finish 1"
          puts "Error message: #{e.errstr}"
          @dbh.rollback
        ensure
-puts "disconnect"
+         puts "disconnect"
          # disconnect from server
          @dbh.disconnect if @dbh
-puts "disconnected"
+         puts "disconnected"
      end
    end
    
@@ -94,7 +94,7 @@ puts "disconnected"
    
    def connect_db()
      puts "connect to db"
-     return DBI.connect("dbi:Pg:dbname=mango_test;host=localhost", "myao", "merlin1")
+     return DBI.connect("dbi:Pg:dbname=mango_test;host=localhost", "myao", "db2")
    end
    
    def disconnect_db()
