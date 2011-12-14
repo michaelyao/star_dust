@@ -1,4 +1,5 @@
 require_relative 'base_class.rb'
+require_relative 'bc_element.rb'
 
 class BC_Queue 
    attr_accessor :qname
@@ -20,7 +21,7 @@ class BC_Queue
      return nil
    end
    
-   def unini()
+   def uninit()
    end
 end
 

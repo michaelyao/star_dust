@@ -3,7 +3,7 @@ require "dbi"
 require 'pg'
 
 require_relative 'bc_queue.rb'
-
+require_relative 'bc_element.rb'
 
    
 class DB_Queue < BC_Queue
@@ -46,8 +46,8 @@ class DB_Queue < BC_Queue
        ensure
          puts "disconnect"
          # disconnect from server
-         @dbh.disconnect if @dbh
-         puts "disconnected"
+         #@dbh.disconnect if @dbh
+         #puts "disconnected"
      end
    end
    
@@ -82,7 +82,7 @@ class DB_Queue < BC_Queue
          @dbh.rollback
        ensure
          # disconnect from server
-         @dbh.disconnect if @dbh
+         #@dbh.disconnect if @dbh
      end
      
      return element
@@ -90,6 +90,7 @@ class DB_Queue < BC_Queue
    
    def uninit()
      disconnect_db()
+     super.uninit()
    end
    
    def connect_db()
