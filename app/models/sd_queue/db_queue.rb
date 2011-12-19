@@ -18,24 +18,23 @@ class DB_Queue < BC_Queue
      begin
 	     puts "In add tail"
        sth = @dbh.prepare("SELECT uri, last_modified_date FROM data_hive.uri_queue WHERE uri = ?")
-	     puts "after prepare"
-
        sth.execute(element.uri)
-       puts "after excute"
-       puts sth.to_s()
+       rows = sth.fetch_all      
+       puts "column name size #{sth.column_names.size}"
        
-       if( sth.count > 0 )
-         puts "finish 1"
+       printf "Number of rows: %d\n", rows.size
+       
+       if( rows.size > 0 )
+         puts "We found same node in the queue."
          sth.finish
        else
-	       puts "finish 2"
+	       puts "We will add to db"
          sth.finish
-         puts "sth.count"
+         
          sth = @dbh.prepare("insert INTO data_hive.uri_queue( uri, last_modified_date ) VALUES ( ?, ?)")
          sth.execute(element.uri, element.last_modified)
-         sth.finish
          @dbh.commit
-         puts "add data"
+         
        end
        puts "finish all"
        rescue DBI::DatabaseError => e
@@ -54,26 +53,21 @@ class DB_Queue < BC_Queue
    def remove_head()
      element = nil
      begin
-       sth = @dbh.prepare("SELECT top 1 uri, last_modified_date FROM data_hive.uri_queue order by last_modified desc")
+       sth = @dbh.prepare("SELECT  uri, last_modified_date FROM data_hive.uri_queue order by last_modified_date desc limit 1")
        sth.execute()
+      
+       while row=sth.fetch do
+         p row
+         element = BC_Element.new( row[0], row[1] )
+       end
        
-       
-       if( sth.count == 0 )
-         
-         sth.finish
-       else
-         sth.fetch do |row|
-           element.uri = row[0]
-           element.last_modified = row[1]
-         end
-         
-         sth.finish
-         
-         sth = @dbh.prepare("delete data_hive.uri_queue WHERE uri = ?")
+       sth.finish
+       if( element != nil)
+         sth = @dbh.prepare("delete from data_hive.uri_queue WHERE uri = ?")
          sth.execute(element.uri)
          sth.finish
          @dbh.commit
-       end
+       end 
        
        rescue DBI::DatabaseError => e
          puts "An error occurred"
